@@ -1,43 +1,27 @@
 def make_change(total)
-  pennies = 0
-  nickels = 0
-  dimes = 0
-  quarters = 0
+  plural = {"pennies" => 0, "nickels " => 1, "dimes " => 2, "quarters " => 3}
+  singular = {"penny" => 0, "nickel " => 1, "dime " => 2, "quarter " => 3}
+  coin_values = [1, 5, 10, 25]
+  coins = [0,0,0,0]
   x = total
   change = ""
+  index = 3
   until x == 0
-    if x >= 25
-      quarters += 1
-      x -= 25
-    elsif x >= 10
-      dimes += 1
-      x -= 10
-    elsif x >= 5
-      nickels += 1
-      x -= 5
+    coin_value = coin_values[index]
+    if x >= coin_value
+      coins[index] += 1
+      x -= coin_value
     else
-      pennies += 1
-      x -= 1
+      index -= 1
     end
   end
-  if quarters > 1
-    change += "#{quarters} quarters "
-  elsif quarters == 1
-    change += "#{quarters} quarter "
+  index = 3
+  until index < 0
+    coin = coins[index]
+    if coin > 0
+      change += (coin > 1 ? "#{coin} #{plural.key(index)}" : "#{coin} #{singular.key(index)}")
+    end
+    index -= 1
   end
-  if dimes > 1
-    change += "#{dimes} dimes "
-  elsif dimes == 1
-    change += "#{dimes} dime "
-  end
-  if nickels > 1
-    change += "#{nickels} nickels "
-  elsif nickels == 1
-    change += "#{nickels} nickel "
-  end
-  if pennies > 1
-    change += "#{pennies} pennies"
-  elsif pennies == 1
-    change += "#{pennies} penny"
-  end
+  change
 end
